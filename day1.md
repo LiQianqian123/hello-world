@@ -12,7 +12,7 @@
 ```python  
   dataset = pd.read_csv('C:\data\data.csv')  
   X = dataset.iloc[ : , :-1].values  
-  Y = dataset.iloc[ : , 3].values  # 取第三行所有数据
+  Y = dataset.iloc[ : , 3].values  # 取第三列所有数据
 ```
 # Step 3 : 处理丢失的数据  
 #用Imputer类对缺失数据进行处理，在Imputer类种mean是均值，median是中值，most_frequent是最大值  
