@@ -85,3 +85,5 @@ plt.ylabel('Estimated Salary')
 plt.legend()
 plt.show()  
 ```
+![Image text](https://github.com/LiQianqian123/hello-world/blob/master/Figure_12_1.png)  
+![Image text](https://github.com/LiQianqian123/hello-world/blob/master/Figure_12_2.png)
