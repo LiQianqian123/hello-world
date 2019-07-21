@@ -81,3 +81,7 @@ plt.scatter(centers[:, 0], centers[:, 1], c='k', marker='*')
 plt.xlabel('free throw hit rate')
 plt.ylabel('hit rate')
 plt.show()
+```
+![Image text](https://github.com/LiQianqian123/hello-world/blob/master/Figure_43_1.png)
+![Image text](https://github.com/LiQianqian123/hello-world/blob/master/Figure_1-43_2.png)
+![Image text](https://github.com/LiQianqian123/hello-world/blob/master/Figure_1-43_3.png)
