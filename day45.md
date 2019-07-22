@@ -61,7 +61,7 @@ Out[11]: array([[2, 3, 4],
                 [4, 5, 6],
                 [6, 7, 8]])
 ```
-# 2.1.5　从头创建数组
+## 2.1.5　从头创建数组
 ```python
 面对大型数组的时候，用 NumPy 内置的方法从头创建数组是一种更高效的方法
 In[12]: # 创建一个长度为10的数组，数组的值都是0
@@ -182,7 +182,7 @@ In[15]: x1[0] = 3.14159 # 这将被截短
         x1
 Out[15]: array([3, 0, 3, 3, 7, 9])
 ```
-# 2.2.3　数组切片： 获取子数组
+## 2.2.3　数组切片： 获取子数组
 ```python
 用中括号获取单个数组元素，用切片（slice）符号获取子数组，切片符号用冒号（:）表示
 x[start:stop:step]
@@ -222,27 +222,256 @@ In[27]: x2[::-1, ::-1]
 Out[27]: array([[ 7, 7, 6, 1],
                 [ 8, 8, 6, 7],
                [ 4, 2, 5, 12]])
- 获取数组的行和列
+获取数组的行和列
  In[28]: print(x2[:, 0]) # x2的第一列
 [12 7 1]
 In[29]: print(x2[0, :]) # x2的第一行
 [12 5 2 4]
+在获取行时，出于语法的简介考虑，可以省略空的切片：
+In[30]: print(x2[0]) #等于x2[0, :]
+[12 5 2 4]
+在获取行时，出于语法的简介考虑，可以省略空的切片：
+In[30]: print(x2[0]) #等于x2[0, :]
+[12 5 2 4]
+在Python 列表中，切片是值的副本
+ In[31]: print(x2)
+[[12 5 2 4]
+[ 7 6 8 8]
+[ 1 6 7 7]]
+从中抽取一个 2× 2 的子数组：
+In[32]: x2_sub = x2[:2, :2]
+print(x2_sub)
+[[12 5]
+[ 7 6]]
+现在如果修改这个子数组，将会看到原始数组也被修改了！结果如下所示：
+In[33]: x2_sub[0, 0] = 99
+print(x2_sub)
+[[99 5]
+[ 7 6]]
+In[34]: print(x2)
+[[99 5 2 4]
+[ 7 6 8 8]
+[ 1 6 7 7]]
+复制数组里的数据或子数组通过 copy() 方法实现：
+ In[35]: x2_sub_copy = x2[:2, :2].copy()
+print(x2_sub_copy)
+[[99 5]
+[ 7 6]]
+如果修改这个子数组，原始的数组不会被改变：#经过复制后得来的数组改变其中的值原数组不会发生变化
+In[36]: x2_sub_copy[0, 0] = 42
+print(x2_sub_copy)
+[[42 5]
+[ 7 6]]
+ In[37]: print(x2)
+[[99 5 2 4]
+[ 7 6 8 8]
+[ 1 6 7 7]]
+```
+##2.2.4数组的变形
+```python
+数组变形最灵活的实现方式是通过 reshape() 函数来实现
+将数字 1~9 放入一个3×3的矩阵中
+In[38]: grid = np.arange(1, 10).reshape((3, 3))
+print(grid)
+[[1 2 3]
+ [4 5 6]
+ [7 8 9]]
+另外一个变形模式是将一个一维数组转变为二维的行或列的矩阵,可以通过reshape 方法来实现，或者更简单地在一个切片操作中利用 newaxis 关键字：
+ In[39]: x = np.array([1, 2, 3])
+# 通过变形获得的行向量
+x.reshape((1, 3))
+Out[39]: array([[1, 2, 3]])
+In[40]: # 通过newaxis获得的行向量
+x[np.newaxis, :]
+Out[40]: array([[1, 2, 3]])
+In[41]: # 通过变形获得的列向量
+x.reshape((3, 1))
+Out[41]: array([[1],
+                [2],
+                [3]])
+In[42]: # 通过newaxis获得的列向量
+x[:, np.newaxis]
+Out[42]: array([[1],
+                [2],
+                [3]])
+```
+## 2.2.5 数组拼接和分裂
+```python
+将多个数组合并为一个，或将一个数组分裂成多个。拼接或连接 NumPy 中的两个数组主要由 np.concatenate、 np.vstack 和 np.hstack 例程实现。 np.concatenate 将数组元组或数组列表作为第一个参数。
+拼接
+In[43]: x = np.array([1, 2, 3])
+        y = np.array([3, 2, 1])
+        np.concatenate([x, y])
+Out[43]: array([1, 2, 3, 3, 2, 1])
+可以一次性拼接两个以上数组：
+In[44]: z = [99, 99, 99]
+print(np.concatenate([x, y, z]))
+[ 1 2 3 3 2 1 99 99 99]
+np.concatenate 也可以用于二维数组的拼接：
+In[45]: grid = np.array([[1, 2, 3],
+                         [4, 5, 6]])
+In[46]: # 沿着第一个轴拼接
+np.concatenate([grid, grid])
+Out[46]: array([[1, 2, 3],
+                [4, 5, 6],
+                [1, 2, 3],
+                [4, 5, 6]])
+In[47]: # 沿着第二个轴拼接（从0开始索引）
+        np.concatenate([grid, grid], axis=1)   #axis 轴
+Out[47]: array([[1, 2, 3, 1, 2, 3],
+                [4, 5, 6, 4, 5, 6]])
+沿着固定维度处理数组时，使用 np.vstack（垂直栈）和 np.hstack（水平栈）函数会更简洁：
+In[48]: x = np.array([1, 2, 3])
+grid = np.array([[9, 8, 7],
+                 [6, 5, 4]])
+# 垂直栈数组
+np.vstack([x, grid])
+Out[48]: array([[1, 2, 3],
+                [9, 8, 7],
+                [6, 5, 4]])
+In[49]: # 水平栈数组
+y = np.array([[99],
+              [99]])
+np.hstack([grid, y])
+Out[49]: array([[ 9, 8, 7, 99],
+                [ 6, 5, 4, 99]])
+分裂
+分裂可以通过 np.split、 np.hsplit 和 np.vsplit 函数来实现
+可以向以上函数传递一个索引列表作为参数，索引列表记录的是分裂点位置（从1开始计）：
+In[50]: x = [1, 2, 3, 99, 99, 3, 2, 1]
+        x1, x2, x3 = np.split(x, [3, 5])  #分裂点在第3个和第5个数
+        print(x1, x2, x3)
+[1 2 3] [99 99] [3 2 1]
+N 分裂点会得到 N + 1 个子数组。相关的 np.hsplit 和 np.vsplit 的用法也
+类似：
+In[51]: grid = np.arange(16).reshape((4, 4))
+        grid
+Out[51]: array([[ 0, 1, 2, 3],
+                [ 4, 5, 6, 7],
+                [ 8, 9, 10, 11],
+                [12, 13, 14, 15]])
+In[52]: upper, lower = np.vsplit(grid, [2])
+        print(upper)
+        print(lower)
+[[0 1 2 3]
+ [4 5 6 7]]
+[[ 8 9 10 11]
+ [12 13 14 15]]
+In[53]: left, right = np.hsplit(grid, [2])
+print(left)
+print(right)
+[[ 0 1]
+ [ 4 5]
+ [ 8 9]
+ [12 13]]
+[[ 2 3]
+ [ 6 7]
+ [10 11]
+ [14 15]] 
+ ```
+# 2.3 NumPy数组的计算： 通用函数
+```python
+ NumPy 通用函数的重要性——它可以提高数组元素的重复计算的效率
+ ```
+## 2.3.1　缓慢的循环
+```python
+Python 的相对缓慢通常出现在很多小操作需要不断重复的时候，比如对数组的每个元素做循环操作时。假设有一个数组，我们想计算每个元素的倒数，一种直接的解决方法是：
+In[1]: import numpy as np
+       np.random.seed(0)
+       def compute_reciprocals(values):
+           output = np.empty(len(values))
+           for i in range(len(values)):
+               output[i] = 1.0 / values[i]
+           return output
+       values = np.random.randint(1, 10, size=5)
+       compute_reciprocals(values)
+Out[1]: array([ 0.16666667, 1. , 0.25 , 0.25 , 0.125 ])
+这一操作将非常耗时，并且是超出意料的慢！我们将用 IPython 的 %timeit 魔法函数来测量
+In[2]: big_array = np.random.randint(1, 100, size=1000000)
+       %timeit compute_reciprocals(big_array)
+1 loop, best of 3: 2.91 s per loop
+```
+##2.3.2　通用函数介绍
+```python
+NumPy 为很多类型的操作提供了非常方便的、静态类型的、可编译程序的接口，也被称作向量操作。
+NumPy 中的向量操作是通过通用函数实现的。通用函数的主要目的是对 NumPy 数组中的值执行更快的重复操作。
+比较以下两个结果：
+In[3]: print(compute_reciprocals(values))
+       print(1.0 / values)
+[ 0.16666667 1. 0.25 0.25 0.125 ]
+[ 0.16666667 1. 0.25 0.25 0.125 ]
+如果计算一个较大数组的运行时间，可以看到它的完成时间比 Python 循环花费的时间更短：
+In[4]: %timeit (1.0 / big_array)
+100 loops, best of 3: 4.6 ms per loop
+```
+##2.3.3　探索NumPy的通用函数
+1. 数组的运算
+NumPy 通用函数的使用方式非常自然，因为它用到了 Python 原生的算术运算符，标准的加、减、乘、除都可以使用：
+In[7]: x = np.arange(4)
+print("x =", x)
+print("x + 5 =", x + 5)
+print("x - 5 =", x - 5)
+print("x * 2 =", x * 2)
+print("x / 2 =", x / 2)
+print("x // 2 =", x // 2) #地板除法运算
+x = [0 1 2 3]
+x + 5 = [5 6 7 8]
+x - 5 = [-5 -4 -3 -2]
+x * 2 = [0 2 4 6]
+x / 2 = [ 0. 0.5 1. 1.5]
+x // 2 = [0 0 1 1]
+还有逻辑非、 ** 表示的指数运算符和 % 表示的模运算符的一元通用函数：
+In[8]: print("-x = ", -x)
+print("x ** 2 = ", x ** 2)
+print("x % 2 = ", x % 2)
+-x = [ 0 -1 -2 -3]
+x ** 2 = [0 1 4 9]
+x % 2 = [0 1 0 1]
+所有这些算术运算符都是 NumPy 内置函数的简单封装器，例如 + 运算符就是一个 add 函数的封装器：
+In[10]: np.add(x, 2)
+Out[10]: array([2, 3, 4, 5])
+绝对值
+NumPy 也可以理解 Python 内置的绝对值函数：
+In[11]: x = np.array([-2, -1, 0, 1, 2])
+        abs(x)
+Out[11]: array([2, 1, 0, 1, 2])
+对应的 NumPy 通用函数是 np.absolute，该函数也可以用别名 np.abs 来访问：
+         In[12]: np.absolute(x)
+         Out[12]: array([2, 1, 0, 1, 2])
+         In[13]: np.abs(x)
+         Out[13]: array([2, 1, 0, 1, 2])
+三角函数
+首先定义一个角度数组：
+         In[15]: theta = np.linspace(0, np.pi, 3)
+现在可以对这些值进行一些三角函数计算：
+In[16]: print("theta = ", theta)
+        print("sin(theta) = ", np.sin(theta))
+        print("cos(theta) = ", np.cos(theta))
+        print("tan(theta) = ", np.tan(theta))
+        theta = [ 0. 1.57079633 3.14159265]
+        sin(theta) = [ 0.00000000e+00 1.00000000e+00 1.22464680e-16]
+        cos(theta) = [ 1.00000000e+00 6.12323400e-17 -1.00000000e+00]
+        tan(theta) = [ 0.00000000e+00 1.63312394e+16 -1.22464680e-16]
+逆三角函数同样可以使用：
+In[17]: x = [-1, 0, 1]
+        print("x = ", x)
+        print("arcsin(x) = ", np.arcsin(x))
+        print("arccos(x) = ", np.arccos(x))
+        print("arctan(x) = ", np.arctan(x))
+x = [-1, 0, 1]
+arcsin(x) = [-1.57079633 0. 1.57079633]
+arccos(x) = [ 3.14159265 1.57079633 0. ]
+arctan(x) = [-0.78539816 0. 0.78539816]
 
 
 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+
+
+
+
+
+
+
 
 
 
