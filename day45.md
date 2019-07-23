@@ -374,7 +374,7 @@ print(right)
  NumPy 通用函数的重要性——它可以提高数组元素的重复计算的效率
  ```
 ## 2.3.1　缓慢的循环
-```python
+```python  
 Python 的相对缓慢通常出现在很多小操作需要不断重复的时候，比如对数组的每个元素做循环操作时。假设有一个数组，我们想计算每个元素的倒数，一种直接的解决方法是：
 In[1]: import numpy as np
        np.random.seed(0)
@@ -389,22 +389,23 @@ Out[1]: array([ 0.16666667, 1. , 0.25 , 0.25 , 0.125 ])
 这一操作将非常耗时，并且是超出意料的慢！我们将用 IPython 的 %timeit 魔法函数来测量
 In[2]: big_array = np.random.randint(1, 100, size=1000000)
        %timeit compute_reciprocals(big_array)
-1 loop, best of 3: 2.91 s per loop
+1 loop, best of 3: 2.91 s per loop  
 ```
-##2.3.2　通用函数介绍
+## 2.3.2　通用函数介绍  
 ```python
-NumPy 为很多类型的操作提供了非常方便的、静态类型的、可编译程序的接口，也被称作向量操作。
-NumPy 中的向量操作是通过通用函数实现的。通用函数的主要目的是对 NumPy 数组中的值执行更快的重复操作。
-比较以下两个结果：
+NumPy 为很多类型的操作提供了非常方便的、静态类型的、可编译程序的接口，也被称作向量操作。  
+NumPy 中的向量操作是通过通用函数实现的。通用函数的主要目的是对 NumPy 数组中的值执行更快的重复操作。  
+比较以下两个结果：  
 In[3]: print(compute_reciprocals(values))
        print(1.0 / values)
 [ 0.16666667 1. 0.25 0.25 0.125 ]
-[ 0.16666667 1. 0.25 0.25 0.125 ]
-如果计算一个较大数组的运行时间，可以看到它的完成时间比 Python 循环花费的时间更短：
-In[4]: %timeit (1.0 / big_array)
-100 loops, best of 3: 4.6 ms per loop
-```
-##2.3.3　探索NumPy的通用函数
+[ 0.16666667 1. 0.25 0.25 0.125 ]  
+如果计算一个较大数组的运行时间，可以看到它的完成时间比 Python 循环花费的时间更短：  
+In[4]: %timeit (1.0 / big_array)  
+100 loops, best of 3: 4.6 ms per loop  
+```  
+## 2.3.3 探索Numpy的通用函数  
+```python
 1. 数组的运算
 NumPy 通用函数的使用方式非常自然，因为它用到了 Python 原生的算术运算符，标准的加、减、乘、除都可以使用：
 In[7]: x = np.arange(4)
