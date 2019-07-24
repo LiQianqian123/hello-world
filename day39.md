@@ -62,3 +62,6 @@ new_model = tf.keras.models.load_model('epic_num_reader.model')
 predictions = new_model.predict(x_test)
 print(np.argmax(predictions[0]))
 ```
+![Image text](https://github.com/LiQianqian123/hello-world/blob/master/Figure_39_1.png)
+![Image text](https://github.com/LiQianqian123/hello-world/blob/master/Figure_39_2.png)
+![Image text](https://github.com/LiQianqian123/hello-world/blob/master/Figure_39_3.png)
