@@ -67,7 +67,7 @@ np.all N/A 验证所有元素是否为真
 ```
 ## 2.4.3　示例： 美国总统的身高是多少
 ```python
-In[13]: !head -4 data/president_heights.csv
+In[13]: head -4 data/president_heights.csv
 order,name,height(cm)
 1,George Washington,189
 2,John Adams,170
@@ -90,9 +90,9 @@ Maximum height: 193
 In[16]: print("25th percentile: ", np.percentile(heights, 25))
         print("Median: ", np.median(heights))
         print("75th percentile: ", np.percentile(heights, 75))
-25th percentile: 174.25
-Median: 182.0
-75th percentile: 183.0
+ 25th percentile: 174.25
+ Median: 182.0
+ 75th percentile: 183.0
 进行一个快速的可视化，通过 Matplotlib用以下代码创建
 In[17]: %matplotlib inline
         import matplotlib.pyplot as plt
@@ -156,11 +156,11 @@ In[8]: M = np.ones((2, 3))
 M.shape = (2, 3)
 a.shape = (3,)
 根据规则 1，数组 a 的维度数更小，所以在其左边补 1：
-M.shape -> (2, 3)
-a.shape -> (1, 3)
+M.shape->(2, 3)
+a.shape->(1, 3)
 根据规则 2，第一个维度不匹配，因此扩展这个维度以匹配数组：
-M.shape -> (2, 3)
-a.shape -> (2, 3)
+M.shape->(2, 3)
+a.shape->(2, 3)
 现在两个数组的形状匹配了，可以看到它们的最终形状都为 (2, 3)：
 In[9]: M + a
 Out[9]: array([[ 1., 2., 3.],
@@ -173,11 +173,11 @@ b = np.arange(3)
 a.shape = (3, 1)
 b.shape = (3,)
 规则 1 告诉我们，需要用 1 将 b 的形状补全：
-a.shape -> (3, 1)
-b.shape -> (1, 3)
+a.shape->(3, 1)
+b.shape->(1, 3)
 规则 2 告诉我们，需要更新这两个数组的维度来相互匹配：
-a.shape -> (3, 3)
-b.shape -> (3, 3)
+a.shape->(3, 3)
+b.shape->(3, 3)
 因为结果匹配，所以这两个形状是兼容的，可以看到以下结果：
 In[11]: a + b
 Out[11]: array([[0, 1, 2],
