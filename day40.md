@@ -81,3 +81,6 @@ X = pickle.load(pickle_in)
 pickle_in = open("C:/python_pycharm/venv/PetImages/y.pickle","rb")
 y = pickle.load(pickle_in)
 ```
+![Image text](https://github.com/LiQianqian123/hello-world/blob/master/Figure_40_1.png)
+![Image text](https://github.com/LiQianqian123/hello-world/blob/master/Figure_40_2.png)
+![Image text](https://github.com/LiQianqian123/hello-world/blob/master/Figure_40_3.png)
